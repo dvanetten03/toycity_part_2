@@ -35,38 +35,86 @@ def todays_date
 end
 
 # def toys_loop
-# 	$products_hash["items"].each do |toy|
+#  	$products_hash["items"].each do |toy|
+#  		return toy["title"]
+#  		return "Retail Price: $" + toy["full-price"]
+#  		return "Total Number of Purchases: " + toy["purchases"].length.to_s
+#  		total_sales = 0.0
+#  		toy["purchases"].each do |purchase| 
+#  			total_sales += purchase["price"].to_f
+#  		end
+#  		return "Total_sales: $#{total_sales}"
+#  		avg_price = total_sales/toy["purchases"].length
+#  		return "Average Price: $#{avg_price}"
+#  		avg_discount = ((toy["full-price"].to_f - avg_price.to_f) / toy["full-price"].to_f) * 100
+#  		return "Average Discount: #{avg_discount.round(2)}%"
+#  	end
 # end
 
-def toy_name
+
+def toy_price(toy)
+	retail_price = toy["full-price"].to_f
+	puts "Retail Price : $#{retail_price}"
 end
 
-def products_section
+def total_purchases(toy)
+	total_purchases = toy["purchases"].length.to_s
+	puts "Total Number of Purchases: #{total_purchases}"
+end
+
+def total_amount_sales(toy)
+	total_sales = toy["purchases"].inject do |sum, purchase|
+		sum + purchase["price"]
+	end
+	puts "Total sales: $#{total_sales}"
+end
+
+def calculate_avg_product_price
+	avg_price = total_amount_sales(toy)/total_purchases(toy)
+	puts "Average Price: $#{avg_price}"
+end
+
+def calculate_avg_discount(toy)
+	avg_discount = ((toy["full-price"].to_f - calculate_avg_product_price.to_f) / toy["full-price"].to_f) * 100
+	puts "Average Discount: #{avg_discount.round(2)}%"
+end
+
+def toy_info_printout
+	$products_hash["items"].each do |toy|
+		puts {toy["title"]}
+		toy_price(toy)
+		total_purchases(toy)
+		total_amount_sales(toy)
+		calculate_avg_product_price(toy)
+		calculate_avg_discount(toy)
+		end
 end
 
 def brands_section
+	$brands = []
+	$products_hash["items"].each do |toy|
+		$brands.push(toy["brand"]) unless $brands.include?(toy["brand"])
+	end
 end
 
-def calculate_purchases
+def brand_total_stock(toy)
+	total_stock = $branded_products.inject(0) do |sum, toy|
+		sum + toy["stock"]
+	end
 end
 
-def calculate_sales
+def brand_avg_price(toy)
+	$total_retail_price = $branded_products.inject(0) do |sum, toy|
+		sum + toy["full-price"].to_f
+	end
 end
 
-def calculate_avg_price
+def total_sales_brand(toy)
+	toy["purchases"].each do |toy|
+		$total_sales = $total_sales + toy["price"]
+	end
 end
 
-def calculate_avg_discount
-end
-
-def brand_name
-end
-
-def brands_toys
-end
-
-def sales_volume
-end
 
 # Print "Sales Report" in ascii art
 	ascii_art('Sales Report')
@@ -81,6 +129,10 @@ end
 
 	section_break
 
+	toy_info_printout
+	#total_purchases("LEGO Iron Man vs. Ultron")
+	#total_amount_sales("LEGO Iron Man vs. Ultron")
+	#calculate_avg_product_price("LEGO Iron Man vs. Ultron")
 # For each product in the data set:
 	# Print the name of the toy
 	# Print the retail price of the toy
