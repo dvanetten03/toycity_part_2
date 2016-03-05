@@ -40,7 +40,6 @@ def print_report
 	ascii_art('Products')
 	section_break
 	products
-	section_break
 	ascii_art('Brands')
 	section_break
 	brands
